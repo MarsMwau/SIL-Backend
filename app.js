@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -39,6 +38,11 @@ app.use('/api/users', passport.authenticate('jwt', { session: false }), userRout
 app.use('/api/albums', passport.authenticate('jwt', { session: false }), albumRoutes);
 app.use('/api/photos', passport.authenticate('jwt', { session: false }), photoRoutes);
 app.use('/api/auth', authRoutes);
+
+app.get('/', (req, res) => {
+    res.send(`<h1>Welcome to the One Frame API</h1>
+              <p>This API is protected and requires authentication.</p>`);
+});
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
