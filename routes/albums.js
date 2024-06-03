@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const albumController = require('../controllers/albumController');
 const passport = require('../config/passport');
-const { validateAlbum } = require('../validators/albumValidator'); // Import the validation middleware
+const { validateAlbum } = require('../validators/albumValidator');
 
 router.post(
     '/',
     passport.authenticate('jwt', { session: false }),
-    validateAlbum, // Add validation middleware here
+    validateAlbum,
     albumController.createAlbum
 );
 

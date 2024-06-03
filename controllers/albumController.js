@@ -23,10 +23,8 @@ exports.getUserAlbums = async (req, res) => {
         const userId = req.user._id;
         console.log('userId:', userId);
 
-        // Fetch the albums for the user
         const albums = await Album.find({ userId: userId });
 
-        // Fetch the photos for each album
         const albumsWithPhotos = await Promise.all(
             albums.map(async (album) => {
                 const photos = await Photo.find({ albumId: album._id }).select('-albumId');

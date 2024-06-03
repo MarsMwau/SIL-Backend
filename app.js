@@ -7,10 +7,20 @@ const albumRoutes = require('./routes/albums');
 const photoRoutes = require('./routes/photos');
 const authRoutes = require('./routes/auth');
 const dbConfig = require('./config/db');
-
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const corsOptions = {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors());
 
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true,
