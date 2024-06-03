@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -6,7 +8,6 @@ const userRoutes = require('./routes/users');
 const albumRoutes = require('./routes/albums');
 const photoRoutes = require('./routes/photos');
 const authRoutes = require('./routes/auth');
-const dbConfig = require('./config/db');
 const cors = require('cors');
 
 const app = express();
@@ -22,7 +23,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors());
 
-mongoose.connect(dbConfig.url, {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
