@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const passport = require('../config/passport');
 
+router.get('/me', passport.authenticate('jwt', { session: false }), userController.getUserData);
 router.put('/update-username', passport.authenticate('jwt', { session: false }), userController.updateUsername);
 router.put('/update-password', passport.authenticate('jwt', { session: false }), userController.updatePassword);
 

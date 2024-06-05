@@ -2,6 +2,22 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const { passwordSchema } = require('../validators/authValidator');
 
+exports.getUserData = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId).select('-password');
+
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        res.status(200).send(user);
+    } catch (err) {
+        res.status(500).send({ message: 'Internal server error', error: err.message });
+    }
+};
+
 exports.updateUsername = async (req, res) => {
     try {
         const userId = req.user._id;
