@@ -34,26 +34,23 @@ exports.login = async (req, res) => {
 
 exports.googleLogin = async (req, res) => {
     const { idToken } = req.body;
-
+  
     try {
-
-        const decodedToken = await admin.auth().verifyIdToken(idToken);
-        const { uid, email, name } = decodedToken;
-
-
-        let user = await User.findOne({ email });
-
-        if (!user) {
-
-            user = new User({ name, email, googleId: uid });
-            await user.save();
-        }
-
-        const token = jwt.encode({ id: user._id }, jwtConfig.secret);
-
-        res.json({ token: `Bearer ${token}` });
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      const { uid, email, name } = decodedToken;
+  
+      let user = await User.findOne({ email });
+  
+      if (!user) {
+        user = new User({ name, email, googleId: uid });
+        await user.save();
+      }
+  
+      const token = jwt.encode({ id: user._id }, jwtConfig.secret);
+  
+      res.json({ token: `Bearer ${token}` });
     } catch (error) {
-        console.error("Error verifying ID token:", error);
-        res.status(401).json({ message: "Invalid ID token" });
+      console.error("Error verifying ID token:", error);
+      res.status(401).json({ message: "Invalid ID token" });
     }
-};
+  };
