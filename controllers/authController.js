@@ -42,7 +42,23 @@ exports.googleLogin = async (req, res) => {
       let user = await User.findOne({ email });
   
       if (!user) {
-        user = new User({ name, email, googleId: uid });
+        // --- FIX START: Generate a unique username ---
+        // 1. Generate a random 4-digit number
+        const randomNum = Math.floor(1000 + Math.random() * 9000);
+        
+        // 2. Get the first name (or default to 'user') and lowercase it
+        const firstName = name ? name.split(" ")[0].toLowerCase() : "user";
+        
+        // 3. Combine them (e.g., "mars5923")
+        const tempUsername = `${firstName}${randomNum}`;
+        // --- FIX END ---
+
+        user = new User({ 
+            name, 
+            email, 
+            googleId: uid,
+            username: tempUsername // Now we save the generated username!
+        });
         await user.save();
       }
   
